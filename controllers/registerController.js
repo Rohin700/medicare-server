@@ -1,5 +1,5 @@
 const e = require("express");
-var registerCollectionObjref = require("../models/registermodel");
+var registerCollectionObjref = require("../models/registerModel");
 var nodemailer = require("nodemailer");
 
 function doRegister (req,resp) {
