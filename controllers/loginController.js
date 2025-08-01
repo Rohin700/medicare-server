@@ -1,4 +1,4 @@
-var registerCollectionObjref = require("../models/registermodel");
+var registerCollectionObjref = require("../models/registerModel");
 var nodemailer = require("nodemailer");
 
 var jwt = require("jsonwebtoken");
