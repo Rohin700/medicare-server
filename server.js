@@ -42,8 +42,8 @@ var loginRoute = require("./route/loginRoute");
 var donarRoute = require("./route/donorRoute");
 var recipientRoute = require("./route/recipientRoute");
 
-app.listen(2004,()=>{
-    console.log("Server Started at port : 2004");
+app.listen(2098,()=>{
+    console.log("Server Started at port : 2098");
 })
 
 app.use("/register", registerRoute);
