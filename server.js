@@ -52,7 +52,7 @@ app.use("/donar", donarRoute);
 app.use("/recipient" ,recipientRoute);
 
 
-app.use("/",(req,resp)=>{
-    res.send("Backend server is running 🚀");
+app.get("/",(req,resp)=>{
+    resp.send("Backend server is running 🚀");
     console.log("Welcome back Sir");
 })
