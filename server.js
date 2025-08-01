@@ -53,6 +53,6 @@ app.use("/recipient" ,recipientRoute);
 
 
 app.use("/",(req,resp)=>{
-    resp.send("Welcome");
-    console.log("Welcome back Sir")
+    res.send("Backend server is running 🚀");
+    console.log("Welcome back Sir");
 })
