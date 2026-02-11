@@ -74,9 +74,7 @@ async function doSendMail(userEmail){
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     let transporter = nodemailer.createTransport({
-        service : "smtp.gmail.com",
-        port: 587,
-        secure: false,
+        service : "gmail",
         auth: {
             user : process.env.NODEMAILER_NAME, //verifird email
             pass : process.env.NODEMAILER_APP_PASS, //it is your app password of your email
