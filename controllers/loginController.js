@@ -32,7 +32,9 @@ async function doSendMail(userEmail){
     const otp = Math.floor(100000 + Math.random() * 900000);
 
     let transporter = nodemailer.createTransport({
-        service : "gmail",
+        service : "smtp.gmail.com",
+        port: 587,
+        secure: false,
         auth: {
             user : process.env.NODEMAILER_NAME, //verifird email
             pass : process.env.NODEMAILER_APP_PASS, //it is your app password of your email
@@ -47,10 +49,10 @@ async function doSendMail(userEmail){
     }
 
     try {
-        await transporter.sendMail(mailOptions);
-
         const otpCollectionObjrefObj = new otpCollectionObjref({email : userEmail , otp : otp.toString()});
         await otpCollectionObjrefObj.save();
+        
+        await transporter.sendMail(mailOptions);
         
         console.log("OTP sent to:", userEmail);
 
