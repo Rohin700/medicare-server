@@ -6,27 +6,66 @@ var jwt = require("jsonwebtoken");
 var otpCollectionObjref = require("../models/otp");
 const optMap = new Map();//to generate otp to be verified by the user
 
-
-
-function doLogin(req,resp){
-    registerCollectionObjref.findOne({email : req.body.email , pwd : req.body.pwd})
-    .then((docu)=>{
-        if(docu!=null){
-            let jtoken = jwt.sign({uid : req.body.email} , process.env.SEC_KEY , {expiresIn : "1h"})
-            
-            let mailStatus = doSendMail(req.body.email);
-            if (!mailStatus) {
-                  return resp.json({ status: false, msg: "Failed to send OTP email." });
-            }
-
-            resp.json({status:true ,msg:"Record Found",obj:docu , token : jtoken});  
-        }else{
-            resp.json({status:false ,msg:"Invalid Id and Password Found"});  
+async function doLogin(req, resp){
+    try {
+        const docu = await registerCollectionObjref.findOne({
+            email: req.body.email,
+            pwd: req.body.pwd
+        });
+        
+        if(!docu){
+            return resp.json({
+                status: false,
+                msg: "Invalid Id and Password"
+            })
         }
-    }).catch((err)=>{
-        resp.json({status:false ,msg:err.message});
-    })
+
+        const jtoken = jwt.sign(
+            { uid: req.body.email },
+            process.env.SEC_KEY,
+            { expiresIn: "1h" }
+        );
+
+        const mailStatus = await doSendMail(req.body.email);
+
+        if (!mailStatus) {
+            return resp.json({
+                status: false,
+                msg: "Failed to send OTP email."
+            });
+        }
+
+        return resp.json({
+            status: true,
+            msg: "Record Found",
+            obj: docu,
+            token: jtoken
+        });
+
+    }catch(err){
+
+    }
 }
+
+// function doLogin(req,resp){
+//     registerCollectionObjref.findOne({email : req.body.email , pwd : req.body.pwd})
+//     .then((docu)=>{
+//         if(docu!=null){
+//             let jtoken = jwt.sign({uid : req.body.email} , process.env.SEC_KEY , {expiresIn : "1h"})
+            
+//             let mailStatus = doSendMail(req.body.email);
+//             if (!mailStatus) {
+//                   return resp.json({ status: false, msg: "Failed to send OTP email." });
+//             }
+
+//             resp.json({status:true ,msg:"Record Found",obj:docu , token : jtoken});  
+//         }else{
+//             resp.json({status:false ,msg:"Invalid Id and Password Found"});  
+//         }
+//     }).catch((err)=>{
+//         resp.json({status:false ,msg:err.message});
+//     })
+// }
 
 async function doSendMail(userEmail){
     const otp = Math.floor(100000 + Math.random() * 900000);
