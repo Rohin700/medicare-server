@@ -43,7 +43,10 @@ async function doLogin(req, resp){
         });
 
     }catch(err){
-
+        return resp.json({
+            status: false,
+            msg: err.message
+        });
     }
 }
 
